@@ -1,3 +1,9 @@
+import axios from 'axios';
+import * as cheerio from 'cheerio';
+import process from 'node:process';
+
+
+
 export async function scrapeAmazonProduct(url: string) {
  if(!url){
     return;
@@ -13,7 +19,7 @@ export async function scrapeAmazonProduct(url: string) {
   
   const options = {
     auth: {
-      username: `${username}-session-${session_id}`
+      username: `${username}-session-${session_id}`,
       password,
     },
     host: 'brd.superproxy.io',
@@ -24,7 +30,9 @@ export async function scrapeAmazonProduct(url: string) {
   try {
     // Fetch the amazon product page
     const response = await axios.get(url, options);
+    console.log(response.data)
 
+    
   } catch (error: any) {
     console.log(error);
     throw new Error(`Failed to scrape product: ${error.message}`)
