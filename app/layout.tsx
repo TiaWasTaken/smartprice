@@ -10,7 +10,7 @@ const spaceGrotesk = Space_Grotesk({
  })
 
 export const metadata: Metadata = {
-  title: 'SmartPrice',
+  title: '$martPrice',
   description: 'Track product prices effortlessly and save money on your daily online shopping.',
 }
 
