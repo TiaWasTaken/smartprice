@@ -38,6 +38,7 @@ export async function scrapeAmazonProduct(url: string){
     const currentPrice = extractPrice(`${currentWholePrice}${currentFractionPrice}`);
 
     const originalPrice = extractPrice(
+      $('.a-size-small aok-offscreen').text().trim(),
       $('#priceblock_ourprice').text().trim(),
       $('.a-price.a-text-price span.a-offscreen').first().text().trim(),
       $('#listPrice').text().trim(),
@@ -74,7 +75,7 @@ export async function scrapeAmazonProduct(url: string){
       description,
       lowestPrice: Number(currentPrice) || Number(originalPrice),
       highestPrice: Number(originalPrice) || Number(currentPrice),
-      averege: Number(currentPrice) || Number(originalPrice)
+      averegePrice: Number(currentPrice) || Number(originalPrice)
     }
 
     return data;
