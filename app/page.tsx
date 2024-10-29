@@ -13,7 +13,7 @@ const Home = () => {
               <Image src="/assets/icons/arrow-right.svg" alt="arrow right" width={16} height={16}/>
             </p>
 
-            <h1 className="head-text">Unleash the Power of <span className="text-primary">$martPrice</span></h1>
+            <h1 className="head-text">Unleash the <span className="text-primary"> Power</span> of <span>$mart</span><span className="text-primary">Price</span></h1>
 
             <p className="mt-6">
               A Powerful, self-serve product analytics to help you retain more of every amazon product available.
