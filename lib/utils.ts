@@ -26,22 +26,42 @@ export function extractCurrency(element: any){
 
 export function extractDescription($: any) {
   const selectors = [
-    ".a-unordered-list .a-list-item",
-    ".a-expander-content p",
+    ".a-list-item"
   ];
 
+  const unwantedPhrases = [
+    "resi e ordini",
+    "Spedisci il reso", 
+    "Flash Player", 
+    "stella",
+    "Ordina le recensioni",
+    "Seleziona il metodo di restituzione",
+    "restituzione",
+  ];
+
+  const bannedClass = "a-unordered-list a-horizontal a-size-small";
+
   for (const selector of selectors) {
-    const elements = $(selector);
+    const elements = $(selector).not(`.${bannedClass.replace(/ /g, ".")}`); // Exclude elements with banned class
     if (elements.length > 0) {
-      const textContent = elements
+      let textContent = elements
         .map((_: any, element: any) => $(element).text().trim())
         .get()
+        .filter((text: string) => 
+          !unwantedPhrases.some(phrase => text.includes(phrase))
+        )
         .join("\n");
-      return textContent;
+
+      const startIndex = textContent.indexOf("I nostri prodotti"); // Example starting phrase for the product description
+      if (startIndex > 0) {
+        textContent = textContent.slice(startIndex); // Remove text before the actual description
+      }
+
+      return textContent.trim();
     }
   }
 
-  return "";
+  return "Description not found or unable to retrieve description text.";
 }
 
 export function getHighestPrice(priceList: PriceHistoryItem[]) {
@@ -81,3 +101,49 @@ export const formatNumber = (num: number = 0) => {
     maximumFractionDigits: 0,
   });
 };
+
+export function extractCategory($: any) {
+  const categorySelector = ".a-unordered-list.a-horizontal.a-size-small";
+
+  // Select elements matching the category class
+  const elements = $(categorySelector);
+
+  if (elements.length > 0) {
+    // Join the text content from all elements within this class
+    const categoryText = elements
+      .map((_: any, element: any) => $(element).text().trim())
+      .get()
+      .join(" > "); // Join with ' > ' to reflect breadcrumb style
+
+    return categoryText;
+  }
+
+  return "Category not found or unable to retrieve category text.";
+}
+
+export function extractRating($: any) {
+  const selectors = [
+    ".a-size-base.a-color-base", // Original selector
+    ".a-icon-alt",               // Amazon often uses this class for star ratings
+    ".review-rating",            // Sometimes ratings have this general class
+  ];
+
+  for (const selector of selectors) {
+    const elements = $(selector);
+
+    if (elements.length > 0) {
+      // Attempt to find a rating value that is a number
+      const ratingText = elements
+        .map((_: any, element: any) => $(element).text().trim())
+        .get()
+        .find((text: string) => /^\d+(\.\d+)?/.test(text)); // Look for numeric value like '4.2'
+
+      if (ratingText) {
+        return ratingText;
+      }
+    }
+  }
+
+  return "Rating not found or unable to retrieve rating text.";
+}
+

@@ -38,7 +38,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               <p className="text-[28px] text-secondary font-semibold">
                 {product.title}
               </p>
-
+              <p className="text-sm text-secondary text-gray-300">{product.category}</p>
               <Link
                 href={product.url}
                 target="_blank"
@@ -77,7 +77,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                   alt="share"
                   width={20}
                   height={20}
-                />
+      />
               </div>
             </div>
           </div>
@@ -102,7 +102,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
                     height={16}
                   />
                   <p className="text-sm text-primary-orange font-semibold">
-                    {product.stars || '25'}
+                    {product.stars || "25"}
                   </p>
                 </div>
 
@@ -120,7 +120,7 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               </div>
 
               <p className="text-sm text-black opacity-50">
-                <span className="text-primary-green font-semibold">93% </span> of
+                <span className="text-primary-green font-semibold">{product.recommend || "50+"} </span>
                 buyers have recommeded this.
               </p>
             </div>
@@ -141,12 +141,12 @@ const ProductDetails = async ({ params: { id } }: Props) => {
               <PriceInfoCard 
                 title="Highest Price"
                 iconSrc="/assets/icons/arrow-up.svg"
-                value={`${product.currency} ${formatNumber(product.highestPrice)}`}
+                value={`${product.currency} ${((product.highestPrice)/100).toFixed(2)}`}
               />
               <PriceInfoCard 
                 title="Lowest Price"
                 iconSrc="/assets/icons/arrow-down.svg"
-                value={`${product.currency} ${formatNumber(product.lowestPrice)}`}
+                value={`${product.currency} ${((product.lowestPrice)/100).toFixed(2)}`}
               />
             </div>
           </div>
